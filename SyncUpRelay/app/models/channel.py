@@ -22,6 +22,7 @@ class Channel(db.Model):
     # Defines the relationship to the Server model
     server = db.relationship("Server", back_populates="channels")
     messages = db.relationship("Message", back_populates="channel", cascade="all, delete-orphan")
+    owner = db.relationship("User", back_populates="owned_channels")
     
     def to_dict(self):
         return {
