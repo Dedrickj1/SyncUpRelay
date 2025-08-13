@@ -12,7 +12,7 @@ def update_channel(channel_id):
     """
     Update an existing channel's name
     """
-    # Find the channel by its ID
+    # Find the channel by its ID 
     channel = Channel.query.get(channel_id)
 
     # Check if the channel exists
