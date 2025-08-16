@@ -1,8 +1,8 @@
 
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Server, Channel, db
-from app.forms import ServerForm, ChannelForm
+from app.models import Server, db
+from app.forms import ServerForm
 
 # Create a Blueprint for server routes
 server_routes = Blueprint('servers', __name__)
@@ -73,43 +73,3 @@ def delete_server(server_id):
     db.session.commit()
 
     return {'message': 'Server deleted successfully'}
-
-
-# Channel Routes
-@server_routes.route('/<int:server_id>/channels')
-def get_server_channels(server_id):
-    """
-    Query for all channels belonging to a specific server
-    """
-    # Use the Channel model to query for channels that match the server_id
-    channels = Channel.query.filter(Channel.server_id == server_id).all()
-    
-    # Convert the list of channel objects into a list of dictionaries
-    return jsonify([channel.to_dict() for channel in channels])
-
-@server_routes.route('/<int:server_id>/channels', methods=['POST']) # <-- 2. Add methods=['POST'] here
-@login_required
-def create_channel(server_id):
-    """
-    Create a new channel for a specific server
-    """
-    server = Server.query.get(server_id)
-    if not server:
-        return {'errors': 'Server not found'}, 404
-    if server.owner_id != current_user.id:
-        return {'errors': 'Forbidden'}, 403
-
-    form = ChannelForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-
-    if form.validate_on_submit():
-        new_channel = Channel(
-            name=form.data['name'],
-            server_id=server_id,
-            owner_id=1
-        )
-        db.session.add(new_channel)
-        db.session.commit()
-        return new_channel.to_dict()
-    
-    return {'errors': form.errors}, 400
