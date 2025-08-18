@@ -6,7 +6,6 @@ from app.forms import MessageForm
 message_routes = Blueprint('messages', __name__)
 
 
-# This route gets all messages for a specific channel
 @message_routes.route('/channels/<int:channel_id>/messages')
 @login_required
 def get_channel_messages(channel_id):
@@ -14,7 +13,6 @@ def get_channel_messages(channel_id):
     return jsonify([message.to_dict() for message in messages])
 
 
-# This route creates a message in a specific channel
 @message_routes.route('/channels/<int:channel_id>/messages', methods=['POST'])
 @login_required
 def create_message(channel_id):
@@ -32,8 +30,7 @@ def create_message(channel_id):
     return {'errors': form.errors}, 400
 
 
-# This route updates a specific message
-@message_routes.route('/<int:message_id>', methods=['PUT'])
+@message_routes.route('/messages/<int:message_id>', methods=['PUT'])
 @login_required
 def update_message(message_id):
     message = Message.query.get(message_id)
@@ -51,8 +48,7 @@ def update_message(message_id):
     return {'errors': form.errors}, 400
 
 
-# This route deletes a specific message
-@message_routes.route('/<int:message_id>', methods=['DELETE'])
+@message_routes.route('/messages/<int:message_id>', methods=['DELETE'])
 @login_required
 def delete_message(message_id):
     message = Message.query.get(message_id)

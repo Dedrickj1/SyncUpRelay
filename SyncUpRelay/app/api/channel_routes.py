@@ -6,15 +6,12 @@ from app.forms import ChannelForm
 channel_routes = Blueprint('channels', __name__)
 
 
-# This route gets all channels for a specific server
 @channel_routes.route('/servers/<int:server_id>/channels')
-@login_required
 def get_server_channels(server_id):
     channels = Channel.query.filter(Channel.server_id == server_id).all()
     return jsonify([channel.to_dict() for channel in channels])
 
 
-# This route creates a channel for a specific server
 @channel_routes.route('/servers/<int:server_id>/channels', methods=['POST'])
 @login_required
 def create_channel(server_id):
@@ -38,8 +35,7 @@ def create_channel(server_id):
     return {'errors': form.errors}, 400
 
 
-# This route updates a specific channel
-@channel_routes.route('/<int:channel_id>', methods=['PUT'])
+@channel_routes.route('/channels/<int:channel_id>', methods=['PUT'])
 @login_required
 def update_channel(channel_id):
     channel = Channel.query.get(channel_id)
@@ -57,8 +53,7 @@ def update_channel(channel_id):
     return {'errors': form.errors}, 400
 
 
-# This route deletes a specific channel
-@channel_routes.route('/<int:channel_id>', methods=['DELETE'])
+@channel_routes.route('/channels/<int:channel_id>', methods=['DELETE'])
 @login_required
 def delete_channel(channel_id):
     channel = Channel.query.get(channel_id)

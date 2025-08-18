@@ -1,93 +1,67 @@
-/* TODO: Add sitewide styles */
 :root {
-  --primary-color: #ff5a5f;
-  --secondary-color: #00A699;
-  --text-color: #484848;
-  --background-color: #f7f7f7;
-  --border-color: #ebebeb;
-  --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --border-radius: 12px;
+  --primary-color: #5865f2;
+  --secondary-color: #43b581;
+  --text-color: #dcddde;
+  --background-color: #36393f;
+  --background-secondary: #2f3136;
+  --background-tertiary: #202225;
+  --border-color: #202225;
+  --font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --border-radius: 8px;
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
+/* --- Global Styles --- */
 body {
   font-family: var(--font-family);
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.5;
+  overflow: hidden; /* Prevents scrolling on the main body */
 }
 
 #root {
   width: 100%;
-}
-
-a {
-  color: var(--secondary-color);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
-}
-
-button:hover {
-  background-color: #e04f54;
-}
-
-button:active {
-  transform: scale(0.98);
-}
-
-input,
-textarea {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  font-family: var(--font-family);
-}
-
-.page-container {
-  width: 90%;
-  max-width: 1100px;
-  margin: 2rem auto;
-}
-
-.navigation-bar {
-  width: 100%;
-  padding: 1rem 5%;
-  background-color: white;
-  box-shadow: var(--box-shadow);
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 }
 
-.spot-card {
-  background-color: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  margin: 1rem;
+/* --- Main App Layout --- */
+.app-body {
+  display: flex;
+  flex-grow: 1;
   overflow: hidden;
+}
+
+/* This container holds both sidebars and is used for hover detection */
+.sidebar-container {
+  position: relative;
+  display: flex;
+  z-index: 10; /* Ensures it appears above the main content */
+}
+
+.main-content {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* --- ChannelList Animation --- */
+
+/* By default, the channel list is positioned absolutely,
+   just to the left of where it should be, and hidden. */
+.channel-list-container {
+  position: absolute;
+  left: 80px; /* This is the width of your ServerList */
+  transform: translateX(-15%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
+}
+
+/* When the 'visible' class is added, it slides into view and becomes visible. */
+.channel-list-container.visible {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
 }

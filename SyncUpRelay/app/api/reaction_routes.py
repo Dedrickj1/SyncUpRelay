@@ -29,7 +29,7 @@ def add_reaction(message_id):
 
 
 # This route removes a specific reaction
-@reaction_routes.route('/<int:reaction_id>', methods=['DELETE'])
+@reaction_routes.route('/reactions/<int:reaction_id>', methods=['DELETE'])
 @login_required
 def remove_reaction(reaction_id):
     """

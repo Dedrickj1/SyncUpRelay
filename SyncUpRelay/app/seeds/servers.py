@@ -4,7 +4,7 @@ from sqlalchemy.sql import text
 def seed_servers():
     # 5 demo servers
     server1 = Server(name='SyncUp HQ', owner_id=1)
-    server2 = Server(name='App Academy Students', owner_id=2)
+    server2 = Server(name='Coding Tips & Helpers', owner_id=2)
     server3 = Server(name='Gaming & Memes', owner_id=3)
     server4 = Server(name='Fantasy Football League', owner_id=1)
     server5 = Server(name='Weekend Coders', owner_id=2)
