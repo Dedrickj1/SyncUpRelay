@@ -11,7 +11,7 @@ def seed_channels():
         Channel(name='project-planning', server_id=1, owner_id=1)
     ]
 
-    # --- Channels for Server 2: App Academy Students ---
+    # --- Channels for Server 2: Coding Tips & Helpers ---
     channels_server2 = [
         Channel(name='python-help', server_id=2, owner_id=2),
         Channel(name='react-redux-help', server_id=2, owner_id=2),
