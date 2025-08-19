@@ -8,13 +8,16 @@ from flask_socketio import SocketIO
 from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
+from .api.server_routes import server_routes
+from .api.channel_routes import channel_routes
+from .api.message_routes import message_routes
+from .api.reaction_routes import reaction_routes
 from .seeds import seed_commands
 from .config import Config
-from .api.server_routes import server_routes
+
 
 if os.environ.get('FLASK_ENV') == 'production':
     origins = [
-        # Add your production frontend url here
     ]
 else:
     origins = "*"
@@ -35,9 +38,18 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-app.register_blueprint(user_routes, url_prefix='/api/users')
-app.register_blueprint(auth_routes, url_prefix='/api/auth')
-app.register_blueprint(server_routes, url_prefix='/api/servers')
+
+# --- CORRECTED BLUEPRINT REGISTRATION ---
+# All blueprints are registered with a general '/api' prefix.
+# This allows each route file to define its own full URL structure.
+app.register_blueprint(user_routes, url_prefix='/api')
+app.register_blueprint(auth_routes, url_prefix='/api')
+app.register_blueprint(server_routes, url_prefix='/api')
+app.register_blueprint(channel_routes, url_prefix='/api')
+app.register_blueprint(message_routes, url_prefix='/api')
+app.register_blueprint(reaction_routes, url_prefix='/api')
+# --- END OF CORRECTION ---
+
 db.init_app(app)
 Migrate(app, db)
 

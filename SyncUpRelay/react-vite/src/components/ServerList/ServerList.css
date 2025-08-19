@@ -1,0 +1,70 @@
+/* This is the main container for the entire server list column.
+   It sets the width, height, and dark background color. */
+.server-list-container {
+  width: 80px;
+  height: 100vh;
+  background-color: #202225;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.server-list-container h2 {
+  color: #8e9297;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* This is the list that holds all the individual server icons.
+   It uses flexbox to stack them vertically. */
+.server-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* This styles each individual server icon.
+   It creates the circular shape and centers the text inside. */
+.server-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #36393f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #dcddde;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* This handles the hover effect for the server icons,
+   changing the shape to a rounded square and updating the color. */
+.server-icon:hover {
+  border-radius: 16px;
+  background-color: #5865f2;
+  color: white;
+}
+
+/* This specifically styles the "Add Server" button. */
+.add-server-button {
+  background-color: #36393f;
+  color: #43b581;
+  font-size: 24px;
+}
+
+.add-server-button:hover {
+  background-color: #43b581;
+  color: white;
+}

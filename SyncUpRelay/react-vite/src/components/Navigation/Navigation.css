@@ -1,22 +1,30 @@
-.profile-dropdown {
-  position: absolute;
-}
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 1rem 5%;
-  width: 100%;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: var(--box-shadow);
-  border-bottom: 1px solid var(--border-color);
-}
 
-li a {
+
+.nav-left a {
   text-decoration: none;
   color: var(--primary-color);
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+/* This is the wrapper div inside ProfileButton.jsx */
+.profile-button-container {
+  position: relative;
+}
+
+/* This is your dropdown menu */
+.profile-dropdown {
+  position: absolute;
+  /* This centers the dropdown perfectly under the button */
+  left: 50%;
+  transform: translateX(-50%);
+  top: 120%; /* Pushes the dropdown down slightly */
+
+  background-color: white;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  z-index: 100;
+  list-style-type: none;
+  min-width: 200px;
 }
