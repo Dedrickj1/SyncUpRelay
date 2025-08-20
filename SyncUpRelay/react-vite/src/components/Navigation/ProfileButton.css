@@ -1,25 +1,17 @@
-
-
-.nav-left a {
-  text-decoration: none;
-  color: var(--primary-color);
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-
 .profile-button-container {
-  position: relative; 
+  position: relative;
 }
 
-
+/* This styles your dropdown menu to make it appear correctly. */
 .profile-dropdown {
   position: absolute;
-  right: 0; /* Aligns the dropdown to the right edge of the container */
+  /* This centers the dropdown under the button */
+  left: 50%;
+  transform: translateX(-50%);
   top: 120%; /* Pushes the dropdown down slightly from the button */
   
   background-color: white;
-  color: var(--text-color); /* Make sure text is visible */
+  color: var(--text-color); /* Ensures text is visible on a white background */
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
   padding: 1rem;

@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Server, Channel, db
 from app.forms import ChannelForm
+# 1. DO NOT import socketio at the top of the file.
 
 channel_routes = Blueprint('channels', __name__)
 
@@ -15,6 +16,9 @@ def get_server_channels(server_id):
 @channel_routes.route('/servers/<int:server_id>/channels', methods=['POST'])
 @login_required
 def create_channel(server_id):
+    # 2. Import socketio INSIDE the function
+    from app import socketio
+    
     server = Server.query.get(server_id)
     if not server:
         return {'errors': 'Server not found'}, 404
@@ -31,6 +35,9 @@ def create_channel(server_id):
         )
         db.session.add(new_channel)
         db.session.commit()
+        
+        socketio.emit('channels_updated', {'server_id': server_id})
+        
         return new_channel.to_dict()
     return {'errors': form.errors}, 400
 
@@ -38,6 +45,9 @@ def create_channel(server_id):
 @channel_routes.route('/channels/<int:channel_id>', methods=['PUT'])
 @login_required
 def update_channel(channel_id):
+    # 2. Import socketio INSIDE the function
+    from app import socketio
+
     channel = Channel.query.get(channel_id)
     if not channel:
         return {'errors': 'Channel not found'}, 404
@@ -49,6 +59,9 @@ def update_channel(channel_id):
     if form.validate_on_submit():
         channel.name = form.data['name']
         db.session.commit()
+
+        socketio.emit('channels_updated', {'server_id': channel.server_id})
+
         return channel.to_dict()
     return {'errors': form.errors}, 400
 
@@ -56,12 +69,19 @@ def update_channel(channel_id):
 @channel_routes.route('/channels/<int:channel_id>', methods=['DELETE'])
 @login_required
 def delete_channel(channel_id):
+    # 2. Import socketio INSIDE the function
+    from app import socketio
+
     channel = Channel.query.get(channel_id)
     if not channel:
         return {'errors': 'Channel not found'}, 404
     if channel.owner_id != current_user.id:
         return {'errors': 'Forbidden'}, 403
     
+    server_id = channel.server_id # Save server_id before deleting
     db.session.delete(channel)
     db.session.commit()
+
+    socketio.emit('channels_updated', {'server_id': server_id})
+
     return {'message': 'Channel deleted successfully'}

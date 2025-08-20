@@ -1,0 +1,100 @@
+/* This is the main container for the right-most column. */
+.message-pane-container {
+  flex-grow: 1;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* This styles the header at the top of the message pane,
+   which displays the current channel's name. */
+.message-pane-header {
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--background-tertiary);
+  box-shadow: var(--box-shadow);
+  flex-shrink: 0;
+}
+
+.header-hashtag {
+  color: #8e9297;
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+.channel-name-header {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* This is the main area where all the messages are displayed. */
+.message-list {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse; /* Shows latest messages at the bottom */
+}
+
+.message {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #5865f2;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-username {
+  font-weight: bold;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.message-text {
+  color: var(--text-color);
+  line-height: 1.4;
+}
+
+/* This styles the message input bar at the bottom. */
+.message-input-container {
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.message-input {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--background-secondary);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.message-input:focus {
+  outline: none;
+}
+
+/* This is for the placeholder text when no channel is selected. */
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #8e9297;
+}

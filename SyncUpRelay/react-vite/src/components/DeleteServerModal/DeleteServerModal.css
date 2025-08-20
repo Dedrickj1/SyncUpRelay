@@ -1,0 +1,104 @@
+.delete-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--background-secondary);
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  width: 400px;
+}
+
+.delete-modal-container h2 {
+  margin-bottom: 1rem;
+}
+
+.delete-modal-container p {
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.delete-modal-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.delete-modal-buttons .delete-button {
+  background-color: #da373c; /* A standard red for delete actions */
+  flex-grow: 1;
+  margin-right: 0.5rem;
+}
+
+.delete-modal-buttons .delete-button:hover {
+  background-color: #a82a2f;
+}
+
+.delete-modal-buttons .cancel-button {
+  background-color: #4f545c;
+  flex-grow: 1;
+  margin-left: 0.5rem;
+}
+
+.delete-modal-buttons .cancel-button:hover {
+  background-color: #41454b;
+}
+
+/* --- Styles for Edit/Delete buttons on the Server List --- */
+
+/* This is the wrapper for each server icon and its action buttons */
+.server-icon-wrapper {
+  position: relative;
+}
+
+/* This container holds the Edit and Delete buttons.
+   It's made invisible with opacity instead of being removed from the layout. */
+.server-actions {
+  position: absolute;
+  top: 50%;
+  left: 70px; /* Positions the buttons to the right of the server icon */
+  transform: translateY(-50%);
+  display: flex; /* Keep it as a flex container */
+  flex-direction: column;
+  gap: 6px;
+  z-index: 20;
+  opacity: 0; /* Hide by default */
+  visibility: hidden; /* Prevent interaction when hidden */
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+/* This makes the action buttons appear when you hover over the server icon's wrapper. */
+.server-icon-wrapper:hover .server-actions {
+  opacity: 1; /* Make it visible on hover */
+  visibility: visible;
+}
+
+/* This is a general style for the small action buttons */
+.action-button {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+/* Specific style for the Edit button */
+.edit-button {
+  background-color: var(--primary-color);
+}
+
+.edit-button:hover {
+  background-color: #4752c4;
+}
+
+/* Specific style for the Delete button in the server list */
+.delete-button {
+  background-color: #da373c;
+}
+
+.delete-button:hover {
+  background-color: #a82a2f;
+}

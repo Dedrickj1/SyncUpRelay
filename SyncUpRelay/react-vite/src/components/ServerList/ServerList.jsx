@@ -1,56 +1,82 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { useModal } from '../../context/Modal';
+import { useSocket } from '../../context/SocketContext'; // 1. Import useSocket
+import ServerFormModal from '../ServerFormModal';
+import DeleteServerModal from '../DeleteServerModal';
 import './ServerList.css';
 
-// The component accepts the onSelectServer function as a prop from Layout.jsx
 function ServerList({ onSelectServer }) {
   const [servers, setServers] = useState([]);
   const [error, setError] = useState(null);
+  const { setModalContent } = useModal();
+  const user = useSelector(state => state.session.user);
+  const socket = useSocket(); // 2. Get the socket instance
 
-  useEffect(() => {
-    const fetchServers = async () => {
-      try {
-        // Fetch the list of servers from the public API route
-        const response = await fetch('/api/servers');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setServers(data);
-        // Automatically select the first server when the list loads
-        if (data.length > 0) {
-          onSelectServer(data[0]);
-        }
-      } catch (error) {
-        setError(error.message);
-        console.error("Failed to fetch servers:", error);
+  // 3. Wrap fetchServers in useCallback to prevent re-creation on every render
+  const fetchServers = useCallback(async () => {
+    try {
+      const response = await fetch('/api/servers');
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setServers(data);
+      if (data.length > 0) {
+        onSelectServer(data[0]);
       }
-    };
+    } catch (error) {
+      setError(error.message);
+    }
+  }, [onSelectServer]);
 
+  // This effect fetches the initial list of servers
+  useEffect(() => {
     fetchServers();
-  }, [onSelectServer]); // The dependency array ensures this runs when the function prop is available.
+  }, [fetchServers]);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // 4. This new effect listens for WebSocket events
+  useEffect(() => {
+    if (!socket) return;
+
+    // When we hear a 'servers_updated' event, re-fetch the server list
+    socket.on('servers_updated', fetchServers);
+
+    // Clean up the listener when the component unmounts
+    return () => {
+      socket.off('servers_updated', fetchServers);
+    };
+  }, [socket, fetchServers]);
+
+  const handleDeleteServer = (server) => {
+    setModalContent(<DeleteServerModal server={server} />);
+  };
+
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <nav className="server-list-container">
       <ul className="server-list">
         {servers.map(server => (
-          // When a server icon is clicked, it calls the onSelectServer function
-          // passed down from Layout.jsx, updating the selectedServer state.
-          <li 
-            key={server.id} 
-            className="server-icon" 
-            title={server.name} 
-            onClick={() => onSelectServer(server)}
-          >
-            {server.name.charAt(0).toUpperCase()}
+          <li key={server.id} className="server-icon-wrapper">
+            <div
+              className="server-icon"
+              title={server.name}
+              onClick={() => onSelectServer(server)}
+            >
+              {server.name.charAt(0).toUpperCase()}
+            </div>
+            {user && user.id === server.ownerId && (
+              <div className="server-actions">
+                <ServerFormModal formType="Update" server={server} />
+                <button onClick={() => handleDeleteServer(server)} className="action-button delete-button">
+                  Delete
+                </button>
+              </div>
+            )}
           </li>
         ))}
-        <li className="server-icon add-server-button" title="Add Server">
-          +
-        </li>
+        {user && (
+          <ServerFormModal formType="Create" />
+        )}
       </ul>
     </nav>
   );

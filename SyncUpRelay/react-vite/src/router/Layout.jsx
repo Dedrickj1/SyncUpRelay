@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { ModalProvider, Modal } from "../context/Modal"
+import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation";
 import ServerList from "../components/ServerList/ServerList";
 import ChannelList from "../components/ChannelList/ChannelList";
+import MessagePane from "../components/MessagePane/MessagePane";
 import { useSocket } from "../context/SocketContext";
 import "../index.css";
 
@@ -13,7 +13,7 @@ export default function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedServer, setSelectedServer] = useState(null);
-  // 1. Add state to track if the sidebar is hovered
+  const [selectedChannel, setSelectedChannel] = useState(null);
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
   const socket = useSocket();
 
@@ -36,19 +36,19 @@ export default function Layout() {
         <Navigation />
         {isLoaded && (
           <div className="app-body">
-            {/* 2. Create a wrapper for the sidebar area */}
             <div 
               className="sidebar-container"
               onMouseEnter={() => setIsSidebarHovered(true)}
               onMouseLeave={() => setIsSidebarHovered(false)}
             >
               <ServerList onSelectServer={setSelectedServer} />
-              {/* 3. Pass the hover state to the ChannelList */}
-              <ChannelList server={selectedServer} isVisible={isSidebarHovered} />
+              <ChannelList 
+                server={selectedServer} 
+                onSelectChannel={setSelectedChannel} 
+                isVisible={isSidebarHovered} 
+              />
             </div>
-            <div className="main-content">
-              <Outlet />
-            </div>
+            <MessagePane channel={selectedChannel} />
           </div>
         )}
         <Modal />

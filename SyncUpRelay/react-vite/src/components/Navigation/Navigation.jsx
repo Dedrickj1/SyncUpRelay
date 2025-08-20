@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
+import "./ProfileButton.css";
 import "./Navigation.css";
 
 function Navigation() {

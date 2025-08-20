@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Message, db
 from app.forms import MessageForm
+from app import socketio 
 
 message_routes = Blueprint('messages', __name__)
 
@@ -26,6 +27,10 @@ def create_message(channel_id):
         )
         db.session.add(new_message)
         db.session.commit()
+        
+       
+        socketio.emit('new_message', new_message.to_dict(), room=str(channel_id))
+        
         return new_message.to_dict()
     return {'errors': form.errors}, 400
 
