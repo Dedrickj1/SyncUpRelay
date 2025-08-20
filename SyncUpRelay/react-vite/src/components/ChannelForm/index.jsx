@@ -28,7 +28,7 @@ function ChannelForm({ formType, channel, serverId }) {
       });
 
       if (res.ok) {
-        // We'll add WebSocket logic here later for real-time updates
+
         closeModal();
       } else {
         const data = await res.json();

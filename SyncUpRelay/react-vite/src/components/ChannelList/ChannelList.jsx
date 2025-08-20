@@ -13,7 +13,7 @@ function ChannelList({ server, onSelectChannel, isVisible }) {
   const user = useSelector(state => state.session.user);
   const socket = useSocket();
 
-  // This function fetches the latest list of channels from the API.
+  
   const fetchChannels = useCallback(async () => {
     if (!server) return;
     try {
@@ -26,28 +26,27 @@ function ChannelList({ server, onSelectChannel, isVisible }) {
     }
   }, [server]);
 
-  // This effect fetches the initial list of channels.
+  
   useEffect(() => {
     fetchChannels();
   }, [fetchChannels]);
 
-  // This effect listens for real-time updates from the WebSocket.
+  
   useEffect(() => {
     if (!socket || !server) return;
 
-    // This is the function that will run when the server sends a signal.
+  
     const handleChannelUpdate = (data) => {
-      // It checks if the update is for the server we are currently looking at.
+      
       if (data.server_id === server.id) {
-        // If it is, it re-fetches the channel list to get the latest data.
+       
         fetchChannels();
       }
     };
 
-    // This line tells the socket to listen for the 'channels_updated' event.
     socket.on('channels_updated', handleChannelUpdate);
 
-    // This cleans up the listener when the component is no longer on the screen.
+    
     return () => {
       socket.off('channels_updated', handleChannelUpdate);
     };

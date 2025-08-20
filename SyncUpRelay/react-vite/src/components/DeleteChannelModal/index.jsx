@@ -12,7 +12,7 @@ function DeleteChannelModal({ channel }) {
       });
 
       if (res.ok) {
-        // We'll add WebSocket logic here later for real-time updates
+    
         console.log(`Channel ${channel.name} deleted successfully.`);
         closeModal();
       } else {

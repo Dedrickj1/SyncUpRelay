@@ -15,7 +15,6 @@ function Navigation() {
       </div>
 
       <div className="nav-right">
-        {/* You can add other links here later */}
       </div>
     </nav>
   );

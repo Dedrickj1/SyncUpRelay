@@ -37,7 +37,7 @@ function ProfileButton() {
     closeMenu();
   };
 
-  // 2. Add a wrapper div with a className
+  
   return (
     <div className="profile-button-container">
       <button onClick={toggleMenu}>

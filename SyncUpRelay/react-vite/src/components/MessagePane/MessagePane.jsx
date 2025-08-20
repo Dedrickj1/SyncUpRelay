@@ -10,7 +10,7 @@ function MessagePane({ channel }) {
   const user = useSelector(state => state.session.user);
   const socket = useSocket(); 
 
-  // Effect for fetching messages when the channel changes
+  
   useEffect(() => {
     if (!channel) {
       setMessages([]);
@@ -68,7 +68,7 @@ function MessagePane({ channel }) {
     });
 
     if (response.ok) {
-      // Clear the input field. The new message will arrive via WebSocket.
+      
       setNewMessage("");
     } else {
       const errorData = await response.json();

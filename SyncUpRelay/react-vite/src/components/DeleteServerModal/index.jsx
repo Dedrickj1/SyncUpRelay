@@ -12,7 +12,7 @@ function DeleteServerModal({ server }) {
       });
 
       if (res.ok) {
-        // We will add WebSocket logic here later to update the list in real-time
+       
         console.log(`Server ${server.name} deleted successfully.`);
         closeModal();
       } else {
