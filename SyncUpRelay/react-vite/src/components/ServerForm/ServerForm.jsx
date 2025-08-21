@@ -28,7 +28,7 @@ function ServerForm({ formType, server }) {
       });
 
       if (res.ok) {
-        // We will add WebSocket logic here later to update the list in real-time
+        
         closeModal();
       } else {
         const data = await res.json();

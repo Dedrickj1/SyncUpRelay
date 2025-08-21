@@ -1,0 +1,86 @@
+.welcome-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--background-secondary);
+  text-align: center;
+}
+
+.welcome-content {
+  max-width: 500px;
+  padding: 2rem;
+}
+
+.welcome-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.welcome-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-color);
+  margin-bottom: 2.5rem;
+}
+
+.welcome-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+
+.welcome-button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 2px solid transparent;
+}
+
+
+.welcome-button.login {
+    background-color: #4f545c; 
+    color: white;
+}
+
+.welcome-button.login:hover {
+    background-color: #5c626b; }
+
+
+.welcome-button.signup {
+    background-color: transparent;
+    color: var(--text-color);
+    border-color: #4f545c; 
+}
+
+.welcome-button.signup:hover {
+    background-color: #4f545c;
+    border-color: #4f545c;
+}
+
+.skip-link {
+  color: #8e9297;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.skip-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.welcome-button.continue {
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none; 
+}
+
+.welcome-button.continue:hover {
+    background-color: #3aa17e; 
+}

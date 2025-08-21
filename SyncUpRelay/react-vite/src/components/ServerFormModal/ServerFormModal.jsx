@@ -1,6 +1,6 @@
 import React from 'react';
 import { useModal } from '../../context/Modal';
-import ServerForm from '../ServerForm';
+import ServerForm from '../ServerForm/ServerForm';
 
 function ServerFormModal({ formType, server }) {
   const { setModalContent } = useModal();

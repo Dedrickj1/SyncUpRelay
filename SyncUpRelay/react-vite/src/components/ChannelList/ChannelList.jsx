@@ -2,51 +2,65 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import { useSocket } from '../../context/SocketContext';
-import ChannelFormModal from '../ChannelFormModal';
-import DeleteChannelModal from '../DeleteChannelModal'; 
+import ChannelFormModal from '../ChannelFormModal/ChannelForm';
+import DeleteChannelModal from '../DeleteChannelModal/DeleteChannelModal'; 
 import './ChannelList.css';
 
-function ChannelList({ server, onSelectChannel, isVisible }) {
+function ChannelList({ server, selectedChannel, onSelectChannel, isVisible }) {
   const [channels, setChannels] = useState([]);
   const [error, setError] = useState(null);
   const { setModalContent } = useModal();
   const user = useSelector(state => state.session.user);
   const socket = useSocket();
 
-  
-  const fetchChannels = useCallback(async () => {
+  const fetchChannels = useCallback(async (isUpdate = false) => {
     if (!server) return;
     try {
       const response = await fetch(`/api/servers/${server.id}/channels`);
       if (!response.ok) throw new Error('Failed to fetch channels');
       const data = await response.json();
       setChannels(data);
+
+      if (isUpdate) {
+        
+        const updatedSelection = data.find(c => c.id === selectedChannel?.id);
+        if (updatedSelection) {
+          
+          onSelectChannel(updatedSelection);
+        } else {
+          
+          onSelectChannel(data.length > 0 ? data[0] : null);
+        }
+      } else if (data.length > 0) {
+        
+        onSelectChannel(data[0]);
+      } else {
+        onSelectChannel(null);
+      }
     } catch (err) {
       setError(err.message);
     }
-  }, [server]);
+  }, [server, selectedChannel, onSelectChannel]);
 
-  
   useEffect(() => {
-    fetchChannels();
-  }, [fetchChannels]);
+    
+    if (server) {
+        fetchChannels();
+    }
+  }, [server]); 
 
-  
   useEffect(() => {
     if (!socket || !server) return;
 
-  
     const handleChannelUpdate = (data) => {
-      
       if (data.server_id === server.id) {
        
-        fetchChannels();
+        fetchChannels(true);
       }
     };
 
     socket.on('channels_updated', handleChannelUpdate);
 
-    
     return () => {
       socket.off('channels_updated', handleChannelUpdate);
     };
@@ -76,7 +90,7 @@ function ChannelList({ server, onSelectChannel, isVisible }) {
           {channels.map(channel => (
             <li
               key={channel.id}
-              className="channel-item"
+              className={`channel-item ${selectedChannel?.id === channel.id ? 'selected' : ''}`}
               onClick={() => onSelectChannel(channel)}
             >
               <div className="channel-name-wrapper">

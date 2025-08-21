@@ -1,6 +1,6 @@
 import React from 'react';
 import { useModal } from '../../context/Modal';
-import ChannelForm from '../ChannelForm';
+import ChannelForm from '../ChannelForm/ChannelForm';
 
 function ChannelFormModal({ formType, channel, serverId }) {
   const { setModalContent } = useModal();

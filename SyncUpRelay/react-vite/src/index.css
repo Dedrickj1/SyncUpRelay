@@ -62,3 +62,8 @@ body {
 .channel-list-container.visible {
   max-width: 240px; 
 }
+.main-content {
+  display: flex; /* Makes ChannelList and MessagePane sit side-by-side */
+  flex-grow: 1;  /* Tells this container to take up all remaining space */
+  overflow: hidden; /* Prevents content from breaking the layout */
+}

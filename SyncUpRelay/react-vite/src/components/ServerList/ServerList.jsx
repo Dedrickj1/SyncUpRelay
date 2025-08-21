@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import { useSocket } from '../../context/SocketContext'; // 1. Import useSocket
-import ServerFormModal from '../ServerFormModal';
-import DeleteServerModal from '../DeleteServerModal';
+import ServerFormModal from '../ServerFormModal/ServerFormModal';
+import DeleteServerModal from '../DeleteServerModal/DeleteServerModal';
 import './ServerList.css';
 
 function ServerList({ onSelectServer }) {

@@ -1,29 +1,38 @@
+.navigation-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background-color: var(--background-secondary); 
+  box-shadow: var(--box-shadow);
+  border-bottom: 1px solid var(--border-color);
+  height: 60px; 
+}
+
+
+.nav-left, .nav-center, .nav-right {
+  flex: 1;
+}
+
+.nav-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.nav-center {
+  display: flex;
+  justify-content: center;
+}
+
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+}
 
 
 .nav-left a {
   text-decoration: none;
-  color: var(--primary-color);
+  color: var(--text-color);
   font-size: 1.5rem;
   font-weight: bold;
-}
-
-
-.profile-button-container {
-  position: relative; 
-}
-
-
-.profile-dropdown {
-  position: absolute;
-  right: 0; 
-  top: 120%; 
-  
-  background-color: white;
-  color: var(--text-color);
-  box-shadow: var(--box-shadow);
-  border-radius: var(--border-radius);
-  padding: 1rem;
-  z-index: 100; 
-  list-style-type: none;
-  min-width: 200px; 
 }

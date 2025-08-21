@@ -2,10 +2,12 @@ import { useState } from "react";
 import { thunkLogin } from "../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { useNavigate } from "react-router-dom"; 
 import "./LoginForm.css";
 
 function LoginFormModal() {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -25,11 +27,12 @@ function LoginFormModal() {
       setErrors(serverResponse);
     } else {
       closeModal();
+      navigate("/"); 
     }
   };
 
   return (
-    <>
+    <div className="login-form-container">
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -41,7 +44,7 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p className="login-errors">{errors.email}</p>}
         <label>
           Password
           <input
@@ -51,10 +54,10 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className="login-errors">{errors.password}</p>}
         <button type="submit">Log In</button>
       </form>
-    </>
+    </div>
   );
 }
 
