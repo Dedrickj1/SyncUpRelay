@@ -35,10 +35,10 @@ db.init_app(app)
 Migrate(app, db)
 CORS(app)
 
-# --- Initialize SocketIO with Eventlet ---
-socketio = SocketIO(app, cors_allowed_origins=origins, async_mode='eventlet')
+# --- Initialize SocketIO AFTER basic app setup ---
+socketio = SocketIO(app, cors_allowed_origins=origins, async_mode='gevent')
 
-# --- Import and Register Blueprints ---
+# --- Import and Register Blueprints AFTER socketio is created ---
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.server_routes import server_routes
@@ -53,7 +53,7 @@ app.register_blueprint(channel_routes, url_prefix='/api')
 app.register_blueprint(message_routes, url_prefix='/api')
 app.register_blueprint(reaction_routes, url_prefix='/api')
 
-# --- Import Socket Event Handlers ---
+# Import the socket event handlers
 from .sockets import *
 
 # --- Request Hooks and Final Routes ---
@@ -62,7 +62,8 @@ def https_redirect():
     if os.environ.get('FLASK_ENV') == 'production':
         if request.headers.get('X-Forwarded-Proto') == 'http':
             url = request.url.replace('http://', 'https://', 1)
-            return redirect(url, code=301)
+            code = 301
+            return redirect(url, code=code)
 
 @app.after_request
 def inject_csrf_token(response):
@@ -70,21 +71,17 @@ def inject_csrf_token(response):
         'csrf_token',
         generate_csrf(),
         secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
-        samesite='Strict' if os.environ.get('FLASK_ENV') == 'production' else None,
-        httponly=True
-    )
+        samesite='Strict' if os.environ.get(
+            'FLASK_ENV') == 'production' else None,
+        httponly=True)
     return response
 
 @app.route("/api/docs")
 def api_help():
     acceptable_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-    route_list = {
-        rule.rule: [
-            [method for method in rule.methods if method in acceptable_methods],
-            app.view_functions[rule.endpoint].__doc__
-        ]
-        for rule in app.url_map.iter_rules() if rule.endpoint != 'static'
-    }
+    route_list = { rule.rule: [[ method for method in rule.methods if method in acceptable_methods ],
+                    app.view_functions[rule.endpoint].__doc__ ]
+                    for rule in app.url_map.iter_rules() if rule.endpoint != 'static' }
     return route_list
 
 @app.route('/', defaults={'path': ''})
