@@ -38,8 +38,7 @@ CORS(app)
 # --- Initialize SocketIO AFTER basic app setup ---
 socketio = SocketIO(app, cors_allowed_origins=origins)
 
-# --- Import and Register Blueprints AFTER socketio is created ---
-# This breaks the circular import loop.
+
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.server_routes import server_routes
