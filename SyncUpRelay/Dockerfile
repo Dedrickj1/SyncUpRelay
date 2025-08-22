@@ -13,14 +13,17 @@ WORKDIR /var/www
 
 COPY requirements.txt .
 
-# This single command now installs all necessary packages,
-# including gevent and psycopg2, directly from your requirements file.
+# 1. Install all dependencies from your requirements file
 RUN pip install -r requirements.txt
+
+# 2. Explicitly install gevent and its websocket library
+# This ensures the necessary packages for your start command are present.
+RUN pip install gevent gevent-websocket
 
 COPY . .
 
 RUN flask db upgrade
 RUN flask seed all
 
-# This start command is now correct because the dependencies will be correct.
+# This start command will now work because gevent is installed.
 CMD ["gunicorn", "--worker-class", "gevent", "-w", "1", "--timeout", "120", "app:app"]
