@@ -13,8 +13,9 @@ WORKDIR /var/www
 
 COPY requirements.txt .
 
-# This single command installs all necessary packages,
-# including gevent and psycopg2, directly from your requirements file.
+# This single command now installs all necessary packages,
+# including the correct versions of gevent and greenlet,
+# directly from your requirements file.
 RUN pip install -r requirements.txt
 
 COPY . .
@@ -22,6 +23,5 @@ COPY . .
 RUN flask db upgrade
 RUN flask seed all
 
-# This start command uses the 'gevent' worker class, which is the
-# standard for Flask-SocketIO, and will work without conflicts.
+# This start command is now correct because the dependencies are correct.
 CMD ["gunicorn", "--worker-class", "gevent", "-w", "1", "--timeout", "120", "app:app"]
