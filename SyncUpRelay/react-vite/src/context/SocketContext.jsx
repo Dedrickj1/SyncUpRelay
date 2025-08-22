@@ -12,7 +12,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // Establish the connection when the component mounts.
+    // Establish the connection when the component mounts. 
     // Make sure the URL matches your Flask server's address and port.
     const newSocket = io("https://syncuprelay.onrender.com/"); // Your Flask server URL
     setSocket(newSocket);
