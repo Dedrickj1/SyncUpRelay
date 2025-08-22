@@ -15,14 +15,16 @@ WORKDIR /var/www
 COPY requirements.txt .
 
 
+RUN pip uninstall -y eventlet
+
+
 RUN pip install -r requirements.txt
-RUN pip install psycopg2 gevent
+RUN pip install psycopg2 gevent gevent-websocket
 
 COPY . .
 
 RUN flask db upgrade
 RUN flask seed all
-
 
 
 CMD ["gunicorn", "--worker-class", "gevent", "-w", "1", "--timeout", "120", "app:app"]
