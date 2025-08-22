@@ -1,5 +1,11 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+
+
+const BACKEND_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://syncuprelay.onrender.com/' 
+  : 'http://127.0.0.1:8000';
 
 
 const SocketContext = createContext();
@@ -12,14 +18,13 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // Establish the connection when the component mounts. 
-    // Make sure the URL matches your Flask server's address and port.
-    const newSocket = io("https://syncuprelay.onrender.com/"); // Your Flask server URL
+    
+    const newSocket = io(BACKEND_URL);
     setSocket(newSocket);
 
-   
+    
     return () => newSocket.disconnect();
-  }, []); 
+  }, []);
 
   return (
     <SocketContext.Provider value={socket}>
