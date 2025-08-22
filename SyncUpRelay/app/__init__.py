@@ -12,10 +12,10 @@ from .seeds import seed_commands
 # --- Pre-initialization ---
 if os.environ.get('FLASK_ENV') == 'production':
     origins = [
-        # Add your production frontend url here
+       " https://syncuprelay.onrender.com/"
     ]
 else:
-    origins = "https://syncuprelay.onrender.com/"
+    origins = "*"
 
 # --- App, Extension, and Config Setup ---
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
