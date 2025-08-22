@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation";
 import ServerList from "../components/ServerList/ServerList";
@@ -8,7 +11,6 @@ import "../index.css";
 
 export default function Layout() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedServer, setSelectedServer] = useState(null);
   const [selectedChannel, setSelectedChannel] = useState(null);
@@ -20,12 +22,8 @@ export default function Layout() {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
-  useEffect(() => {
-    
-    if (isLoaded && !user) {
-      navigate("/welcome");
-    }
-  }, [isLoaded, user, navigate]);
+  // The redirect logic has been removed from this file.
+  // The component will now render correctly for both guests and logged-in users.
 
   useEffect(() => {
     if (socket) {
@@ -36,16 +34,11 @@ export default function Layout() {
     }
   }, [socket]);
 
-  
-  if (!isLoaded) {
-    return null; 
-  }
-
   return (
     <>
       <ModalProvider>
         <Navigation />
-        {user && (
+        {isLoaded && (
           <div className="app-body">
             <div 
               className="sidebar-container"
