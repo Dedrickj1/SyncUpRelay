@@ -13,18 +13,14 @@ WORKDIR /var/www
 
 COPY requirements.txt .
 
-# 1. Uninstall eventlet to prevent any conflicts.
-RUN pip uninstall -y eventlet
-
-# 2. Install your requirements, gevent, and gevent-websocket.
+# This single command now installs all necessary packages,
+# including gevent and psycopg2, directly from your requirements file.
 RUN pip install -r requirements.txt
-RUN pip install psycopg2 gevent gevent-websocket
 
 COPY . .
 
 RUN flask db upgrade
 RUN flask seed all
 
-# 3. This start command uses the 'gevent' worker class, which is the
-# standard for Flask-SocketIO, and will work without conflicts.
+# This start command is now correct because the dependencies will be correct.
 CMD ["gunicorn", "--worker-class", "gevent", "-w", "1", "--timeout", "120", "app:app"]
