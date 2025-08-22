@@ -5,6 +5,14 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # This is the key change. It makes your database connection
+    # more resilient to timeouts and disconnections, which is
+    # crucial for a hosted environment like Render.
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+    }
+    
     # SQLAlchemy 1.4 no longer supports url strings that start with 'postgres'
     # (only 'postgresql') but heroku's postgres add-on automatically sets the
     # url in the hidden config vars to start with postgres.
