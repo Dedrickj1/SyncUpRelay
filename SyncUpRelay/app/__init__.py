@@ -7,29 +7,20 @@ from flask_login import LoginManager
 from flask_socketio import SocketIO
 from werkzeug.middleware.proxy_fix import ProxyFix
 from .models import db, User
-from .api.user_routes import user_routes
-from .api.auth_routes import auth_routes
-from .api.server_routes import server_routes
-from .api.channel_routes import channel_routes
-from .api.message_routes import message_routes
-from .api.reaction_routes import reaction_routes
-from .seeds import seed_commands
 from .config import Config
+from .seeds import seed_commands
 
+# --- Pre-initialization ---
 if os.environ.get('FLASK_ENV') == 'production':
-   
     origins = [
-        "https://syncuprelay.onrender.com" 
+        "https://syncuprelay.onrender.com"
     ]
 else:
-    
     origins = "*"
 
+# --- App, Extension, and Config Setup ---
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
-
-
 app.wsgi_app = ProxyFix(app.wsgi_app)
-
 
 login = LoginManager(app)
 login.login_view = 'auth.unauthorized'
@@ -38,18 +29,24 @@ login.login_view = 'auth.unauthorized'
 def load_user(id):
     return User.query.get(int(id))
 
-# Tell flask about our seed commands
 app.cli.add_command(seed_commands)
-
 app.config.from_object(Config)
 db.init_app(app)
 Migrate(app, db)
 CORS(app)
 
-# Initialize SocketIO with CORS
+# --- Initialize SocketIO AFTER basic app setup ---
 socketio = SocketIO(app, cors_allowed_origins=origins)
 
-# --- Blueprint Registration and Socket Import ---
+# --- Import and Register Blueprints AFTER socketio is created ---
+# This breaks the circular import loop.
+from .api.user_routes import user_routes
+from .api.auth_routes import auth_routes
+from .api.server_routes import server_routes
+from .api.channel_routes import channel_routes
+from .api.message_routes import message_routes
+from .api.reaction_routes import reaction_routes
+
 app.register_blueprint(user_routes, url_prefix='/api')
 app.register_blueprint(auth_routes, url_prefix='/api')
 app.register_blueprint(server_routes, url_prefix='/api')
@@ -57,6 +54,7 @@ app.register_blueprint(channel_routes, url_prefix='/api')
 app.register_blueprint(message_routes, url_prefix='/api')
 app.register_blueprint(reaction_routes, url_prefix='/api')
 
+# Import the socket event handlers
 from .sockets import *
 
 # --- Request Hooks and Final Routes ---
