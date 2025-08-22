@@ -28,5 +28,7 @@ class Message(db.Model):
             'text': self.text,
             'channelId': self.channel_id,
             'userId': self.user_id,
+            'userName': self.user.username, 
+            'createdAt': self.created_at.isoformat(),
             'reactions': [reaction.to_dict() for reaction in self.reactions]
         }

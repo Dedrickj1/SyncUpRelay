@@ -1,4 +1,4 @@
-.login-form-container {
+.edit-message-form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,42 +9,33 @@
   width: 400px;
 }
 
-.login-form-container h1 {
+.edit-message-form-container h1 {
   margin-bottom: 1.5rem;
 }
 
-.login-form-container form {
+.edit-message-form-container form {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.login-form-container label {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  color: #8e9297;
-}
-
-.login-form-container input {
-  margin-top: 0.5rem;
+.edit-message-form-container textarea {
+  min-height: 100px;
+  resize: vertical;
   background-color: var(--background-tertiary);
   border: 1px solid var(--border-color);
   color: var(--text-color);
   font-size: 1rem;
   padding: 10px;
   border-radius: 4px;
+  margin-bottom: 1rem;
 }
 
-.login-form-container button {
+.edit-message-form-container button {
   margin-top: 1rem;
 }
 
-/* This styles the error messages */
-.login-errors {
+.error {
   color: var(--primary-color);
   font-size: 0.875rem;
   margin-top: -0.5rem;

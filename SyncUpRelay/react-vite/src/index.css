@@ -11,13 +11,18 @@
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Global Styles --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: var(--font-family);
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.5;
-  overflow: hidden; /* Prevents scrolling on the main body */
+  overflow: hidden;
 }
 
 #root {
@@ -27,18 +32,17 @@ body {
   flex-direction: column;
 }
 
-/* --- Main App Layout --- */
+
 .app-body {
   display: flex;
   flex-grow: 1;
   overflow: hidden;
 }
 
-/* This container holds both sidebars and is used for hover detection */
+
 .sidebar-container {
-  position: relative;
   display: flex;
-  z-index: 10; /* Ensures it appears above the main content */
+  flex-shrink: 0; 
 }
 
 .main-content {
@@ -46,22 +50,20 @@ body {
   overflow-y: auto;
 }
 
-/* --- ChannelList Animation --- */
 
-/* By default, the channel list is positioned absolutely,
-   just to the left of where it should be, and hidden. */
 .channel-list-container {
-  position: absolute;
-  left: 80px; /* This is the width of your ServerList */
-  transform: translateX(-15%);
-  opacity: 0;
-  visibility: hidden;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
+  max-width: 0;
+  overflow: hidden;
+  transition: max-width 0.3s ease-in-out;
+  white-space: nowrap; 
 }
 
-/* When the 'visible' class is added, it slides into view and becomes visible. */
+
 .channel-list-container.visible {
-  transform: translateX(0);
-  opacity: 1;
-  visibility: visible;
+  max-width: 240px; 
+}
+.main-content {
+  display: flex; 
+  flex-grow: 1;  
+  overflow: hidden; 
 }

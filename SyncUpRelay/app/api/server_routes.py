@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Server, db
 from app.forms import ServerForm
+from app import socketio
 
 server_routes = Blueprint('servers', __name__)
 
@@ -24,6 +25,9 @@ def create_server():
         )
         db.session.add(new_server)
         db.session.commit()
+
+        socketio.emit('servers_updated', {'message': 'Server list has been updated'})
+
         return new_server.to_dict()
     return {'errors': form.errors}, 400
 
@@ -42,7 +46,11 @@ def update_server(server_id):
     if form.validate_on_submit():
         server.name = form.data['name']
         db.session.commit()
+
+        socketio.emit('servers_updated', {'message': 'Server list has been updated'})
+
         return server.to_dict()
+
     return {'errors': form.errors}, 400
 
 
@@ -57,4 +65,7 @@ def delete_server(server_id):
 
     db.session.delete(server)
     db.session.commit()
+
+    socketio.emit('servers_updated', {'message': 'Server list has been updated'})
+
     return {'message': 'Server deleted successfully'}
