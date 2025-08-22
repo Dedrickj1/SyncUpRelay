@@ -14,8 +14,9 @@ WORKDIR /var/www
 
 COPY requirements.txt .
 
+
 RUN pip install -r requirements.txt
-RUN pip install psycopg2
+RUN pip install psycopg2 gevent
 
 COPY . .
 
@@ -23,4 +24,5 @@ RUN flask db upgrade
 RUN flask seed all
 
 
-CMD ["gunicorn", "--worker-class", "eventlet", "-w", "1", "--timeout", "120", "app:app"]
+
+CMD ["gunicorn", "--worker-class", "gevent", "-w", "1", "--timeout", "120", "app:app"]
