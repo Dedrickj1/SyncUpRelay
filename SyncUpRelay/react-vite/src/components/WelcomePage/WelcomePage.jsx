@@ -18,7 +18,7 @@ function WelcomePage() {
           <>
             <p className="welcome-subtitle">You are already logged in.</p>
             <div className="welcome-actions">
-              {/* This link now points to "/" */}
+             
               <Link to="/" className="welcome-button continue">
                 Continue to App
               </Link>
@@ -39,7 +39,7 @@ function WelcomePage() {
                 className="welcome-button signup"
               />
             </div>
-            {/* This link now points to "/" */}
+          
             <Link to="/" className="skip-link">
               Skip for now &rarr;
             </Link>

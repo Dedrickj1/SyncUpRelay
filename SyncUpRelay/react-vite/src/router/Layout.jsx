@@ -22,9 +22,7 @@ export default function Layout() {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
-  // The redirect logic has been removed from this file.
-  // The component will now render correctly for both guests and logged-in users.
-
+  
   useEffect(() => {
     if (socket) {
       socket.on('connect', () => {

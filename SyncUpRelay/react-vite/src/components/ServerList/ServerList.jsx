@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import { useSocket } from '../../context/SocketContext'; // 1. Import useSocket
+import { useSocket } from '../../context/SocketContext';
 import ServerFormModal from '../ServerFormModal/ServerFormModal';
 import DeleteServerModal from '../DeleteServerModal/DeleteServerModal';
 import './ServerList.css';
@@ -11,9 +11,9 @@ function ServerList({ onSelectServer }) {
   const [error, setError] = useState(null);
   const { setModalContent } = useModal();
   const user = useSelector(state => state.session.user);
-  const socket = useSocket(); // 2. Get the socket instance
+  const socket = useSocket(); 
 
-  // 3. Wrap fetchServers in useCallback to prevent re-creation on every render
+  
   const fetchServers = useCallback(async () => {
     try {
       const response = await fetch('/api/servers');
@@ -28,19 +28,19 @@ function ServerList({ onSelectServer }) {
     }
   }, [onSelectServer]);
 
-  // This effect fetches the initial list of servers
+  
   useEffect(() => {
     fetchServers();
   }, [fetchServers]);
 
-  // 4. This new effect listens for WebSocket events
+
   useEffect(() => {
     if (!socket) return;
 
-    // When we hear a 'servers_updated' event, re-fetch the server list
+    
     socket.on('servers_updated', fetchServers);
 
-    // Clean up the listener when the component unmounts
+    
     return () => {
       socket.off('servers_updated', fetchServers);
     };
