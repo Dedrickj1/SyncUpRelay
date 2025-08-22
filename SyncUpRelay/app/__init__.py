@@ -15,7 +15,7 @@ if os.environ.get('FLASK_ENV') == 'production':
         # Add your production frontend url here
     ]
 else:
-    origins = "*"
+    origins = "https://syncuprelay.onrender.com/"
 
 # --- App, Extension, and Config Setup ---
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
