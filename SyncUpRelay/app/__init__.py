@@ -36,7 +36,6 @@ Migrate(app, db)
 CORS(app)
 
 # --- Initialize SocketIO AFTER basic app setup ---
-# This is the key change: ensure async_mode is set to 'gevent' to match your Dockerfile.
 socketio = SocketIO(app, cors_allowed_origins=origins, async_mode='gevent')
 
 # --- Import and Register Blueprints AFTER socketio is created ---
