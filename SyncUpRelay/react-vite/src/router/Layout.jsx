@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation";
 import ServerList from "../components/ServerList/ServerList";
@@ -11,15 +8,24 @@ import "../index.css";
 
 export default function Layout() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedServer, setSelectedServer] = useState(null);
   const [selectedChannel, setSelectedChannel] = useState(null);
   const [isSidebarHovered, setIsSidebarHovered] = useState(false);
   const socket = useSocket();
+  const user = useSelector(state => state.session.user);
 
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
+
+  useEffect(() => {
+    
+    if (isLoaded && !user) {
+      navigate("/welcome");
+    }
+  }, [isLoaded, user, navigate]);
 
   useEffect(() => {
     if (socket) {
@@ -30,11 +36,16 @@ export default function Layout() {
     }
   }, [socket]);
 
+  
+  if (!isLoaded) {
+    return null; 
+  }
+
   return (
     <>
       <ModalProvider>
         <Navigation />
-        {isLoaded && (
+        {user && (
           <div className="app-body">
             <div 
               className="sidebar-container"
@@ -44,7 +55,7 @@ export default function Layout() {
               <ServerList onSelectServer={setSelectedServer} />
               <ChannelList 
                 server={selectedServer} 
-                selectedChannel={selectedChannel} 
+                selectedChannel={selectedChannel}
                 onSelectChannel={setSelectedChannel} 
                 isVisible={isSidebarHovered} 
               />
