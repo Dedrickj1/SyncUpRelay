@@ -44,7 +44,7 @@ export default function Layout() {
               <ServerList onSelectServer={setSelectedServer} />
               <ChannelList 
                 server={selectedServer} 
-                selectedChannel={selectedChannel} // Pass the selected channel down
+                selectedChannel={selectedChannel} 
                 onSelectChannel={setSelectedChannel} 
                 isVisible={isSidebarHovered} 
               />
