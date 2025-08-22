@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 
 
 const BACKEND_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://syncuprelay.onrender.com/' 
+  ? 'https://syncuprelay-niqy.onrender.com/' 
   : 'http://127.0.0.1:8000';
 
 
