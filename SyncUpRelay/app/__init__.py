@@ -5,7 +5,6 @@ from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
 from flask_socketio import SocketIO
-from werkzeug.middleware.proxy_fix import ProxyFix
 from .models import db, User
 from .config import Config
 from .seeds import seed_commands
@@ -13,14 +12,13 @@ from .seeds import seed_commands
 # --- Pre-initialization ---
 if os.environ.get('FLASK_ENV') == 'production':
     origins = [
-        "https://syncuprelay.onrender.com"
+        "https://syncuprelay-niqy.onrender.com"
     ]
 else:
     origins = "*"
 
 # --- App, Extension, and Config Setup ---
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
-app.wsgi_app = ProxyFix(app.wsgi_app)
 
 login = LoginManager(app)
 login.login_view = 'auth.unauthorized'
@@ -35,8 +33,9 @@ db.init_app(app)
 Migrate(app, db)
 CORS(app)
 
-# --- Initialize SocketIO AFTER basic app setup ---
-socketio = SocketIO(app, cors_allowed_origins=origins, async_mode='gevent')
+# --- Initialize SocketIO without specifying async_mode ---
+# This allows it to work with the standard 'flask run' command.
+socketio = SocketIO(app, cors_allowed_origins=origins)
 
 # --- Import and Register Blueprints AFTER socketio is created ---
 from .api.user_routes import user_routes
