@@ -1,5 +1,5 @@
 SyncUp Relay
-Live Link: SyncUp Relay on Render
+Live Link: https://syncuprelay.onrender.com/
 
 Project Description
 SyncUp Relay is a full-stack, real-time chat application inspired by modern communication platforms like Slack and Discord. The application allows users to create communities (servers), organize conversations into channels, and communicate through live messaging. The core of the app is its real-time functionality, powered by WebSockets, which ensures that all messages, reactions, and server updates appear instantly for all users without needing a page refresh.
