@@ -1,21 +1,28 @@
+
 FROM python:3.9.18-alpine3.18
 
-# Install system dependencies (Alpine uses 'apk')
+# Install system dependencies for Alpine
 RUN apk add --no-cache build-base postgresql-dev gcc python3-dev musl-dev libffi-dev
 
+# Set working directory
 WORKDIR /var/www
 
+# Copy requirements first for better caching
 COPY requirements.txt .
 
-# 1. Upgrade pip/setuptools first to fix the 'pkg_resources' error
-# 2. Install requirements
-RUN pip install --upgrade pip setuptools && \
-    pip install -r requirements.txt
+# FIX 1: Explicitly install setuptools and upgrade pip
+# FIX 2: Install gevent-websocket specifically to ensure the worker is available
+RUN pip install --upgrade pip setuptools
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir gevent-websocket
 
+# Copy the rest of the app
 COPY . .
 
-# IMPORTANT: We move migrations and seeding to a shell script or the CMD 
-# so they run when the container STARTS, not while it's BUILDING.
-# For now, let's stick to getting the server up:
+# Render defaults to 10000 for Docker services
+EXPOSE 10000
 
-CMD gunicorn --worker-class gevent -w 1 --timeout 120 --bind 0.0.0.0:$PORT app:app
+# FIX 3: Use 'python -m gunicorn' to bypass the broken bin script
+# FIX 4: Use the full GeventWebSocketWorker path
+# FIX 5: Explicitly bind to 0.0.0.0:10000
+CMD ["python", "-m", "gunicorn", "-k", "geventwebsocket.gunicorn.workers.GeventWebSocketWorker", "-w", "1", "--timeout", "120", "--bind", "0.0.0.0:10000", "app:app"]
