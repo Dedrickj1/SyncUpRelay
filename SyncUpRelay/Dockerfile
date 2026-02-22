@@ -9,7 +9,7 @@ WORKDIR /var/www
 COPY requirements.txt .
 
 # Upgrade pip and install all requirements
-RUN pip install --upgrade pip setuptools
+RUN pip install --upgrade pip "setuptools<70.0.0"
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the app

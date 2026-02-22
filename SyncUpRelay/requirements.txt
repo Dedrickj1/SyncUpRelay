@@ -1,4 +1,4 @@
-setuptools>=65.0.0
+setuptools<70.0.0
 zope.interface
 zope.event
 gunicorn==22.0.0
