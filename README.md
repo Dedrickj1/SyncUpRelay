@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 SyncUp Relay
 Live Link: https://syncuprelay.onrender.com/
 
@@ -74,3 +75,6 @@ A welcome page guides new users to log in, sign up, or continue as a guest.
 A clean, modern, dark-themed UI inspired by professional chat applications.
 
 A seamless, single-page application experience built with React Router.
+=======
+# SyncUpRelay 
+>>>>>>> 6aa1434 (update)
