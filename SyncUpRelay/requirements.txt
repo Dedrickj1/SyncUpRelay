@@ -1,4 +1,6 @@
 setuptools>=65.0.0
+zope.interface
+zope.event
 gunicorn==22.0.0
 gevent==22.10.2
 gevent-websocket==0.10.1
