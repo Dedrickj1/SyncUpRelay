@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN flask db upgrade
-RUN flask seed all
+# RUN flask db upgrade
+#RUN flask seed all
 
 CMD ["gunicorn", "--worker-class", "gevent", "-w", "1", "--timeout", "120", "app:app"]
